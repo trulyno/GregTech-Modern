@@ -3,7 +3,6 @@ package com.gregtechceu.gtceu.data.recipe;
 import com.gregtechceu.gtceu.api.data.chemical.ChemicalHelper;
 import com.gregtechceu.gtceu.api.data.chemical.material.stack.ItemMaterialInfo;
 import com.gregtechceu.gtceu.api.data.chemical.material.stack.MaterialStack;
-import com.gregtechceu.gtceu.common.block.variant.CasingBlock;
 import com.gregtechceu.gtceu.common.block.variant.CoilBlock;
 import com.gregtechceu.gtceu.common.data.GTBlocks;
 import com.gregtechceu.gtceu.common.data.GTMachines;
@@ -58,52 +57,52 @@ public class MaterialInfoLoader {
                         new MaterialStack(GTMaterials.Trinium, M)) // ingot
         );
 
-        ChemicalHelper.registerMaterialInfo(GTMachines.HULL[0].getItem(), new ItemMaterialInfo(
+        ChemicalHelper.registerMaterialInfo(GTMachines.HULL[0].getBlock(), new ItemMaterialInfo(
                 new MaterialStack(GTMaterials.WroughtIron, M * 8), // plate
                 new MaterialStack(GTMaterials.RedAlloy, M), // single cable
                 new MaterialStack(GTMaterials.Rubber, M * 2))); // plate
 
-        ChemicalHelper.registerMaterialInfo(GTMachines.HULL[1].getItem(), new ItemMaterialInfo(
+        ChemicalHelper.registerMaterialInfo(GTMachines.HULL[1].getBlock(), new ItemMaterialInfo(
                 new MaterialStack(GTMaterials.Steel, M * 8), // plate
                 new MaterialStack(GTMaterials.Tin, M), // single cable
                 new MaterialStack(GTMaterials.Rubber, M * 2))); // plate
 
-        ChemicalHelper.registerMaterialInfo(GTMachines.HULL[2].getItem(), new ItemMaterialInfo(
+        ChemicalHelper.registerMaterialInfo(GTMachines.HULL[2].getBlock(), new ItemMaterialInfo(
                 new MaterialStack(GTMaterials.Aluminium, M * 8), // plate
                 new MaterialStack(GTMaterials.Copper, M), // single cable
                 new MaterialStack(GTMaterials.Rubber, M * 2))); // plate
 
-        ChemicalHelper.registerMaterialInfo(GTMachines.HULL[3].getItem(), new ItemMaterialInfo(
+        ChemicalHelper.registerMaterialInfo(GTMachines.HULL[3].getBlock(), new ItemMaterialInfo(
                 new MaterialStack(GTMaterials.StainlessSteel, M * 8), // plate
                 new MaterialStack(GTMaterials.Gold, M), // single cable
                 new MaterialStack(GTMaterials.Rubber, M * 2))); // plate
 
-        ChemicalHelper.registerMaterialInfo(GTMachines.HULL[4].getItem(), new ItemMaterialInfo(
+        ChemicalHelper.registerMaterialInfo(GTMachines.HULL[4].getBlock(), new ItemMaterialInfo(
                 new MaterialStack(GTMaterials.Titanium, M * 8), // plate
                 new MaterialStack(GTMaterials.Aluminium, M), // single cable
                 new MaterialStack(GTMaterials.Rubber, M * 2))); // plate
 
-        ChemicalHelper.registerMaterialInfo(GTMachines.HULL[5].getItem(), new ItemMaterialInfo(
+        ChemicalHelper.registerMaterialInfo(GTMachines.HULL[5].getBlock(), new ItemMaterialInfo(
                 new MaterialStack(GTMaterials.TungstenSteel, M * 8), // plate
                 new MaterialStack(GTMaterials.Platinum, M), // single cable
                 new MaterialStack(GTMaterials.Rubber, M * 2))); // plate
 
-        ChemicalHelper.registerMaterialInfo(GTMachines.HULL[6].getItem(), new ItemMaterialInfo(
+        ChemicalHelper.registerMaterialInfo(GTMachines.HULL[6].getBlock(), new ItemMaterialInfo(
                 new MaterialStack(GTMaterials.RhodiumPlatedPalladium, M * 8), // plate
                 new MaterialStack(GTMaterials.NiobiumTitanium, M), // single cable
                 new MaterialStack(GTMaterials.Rubber, M * 2))); // plate
 
-        ChemicalHelper.registerMaterialInfo(GTMachines.HULL[7].getItem(), new ItemMaterialInfo(
+        ChemicalHelper.registerMaterialInfo(GTMachines.HULL[7].getBlock(), new ItemMaterialInfo(
                 new MaterialStack(GTMaterials.NaquadahAlloy, M * 8), // plate
                 new MaterialStack(GTMaterials.VanadiumGallium, M), // single cable
                 new MaterialStack(GTMaterials.Rubber, M * 2))); // plate
 
-        ChemicalHelper.registerMaterialInfo(GTMachines.HULL[8].getItem(), new ItemMaterialInfo(
+        ChemicalHelper.registerMaterialInfo(GTMachines.HULL[8].getBlock(), new ItemMaterialInfo(
                 new MaterialStack(GTMaterials.Darmstadtium, M * 8), // plate
                 new MaterialStack(GTMaterials.YttriumBariumCuprate, M), // single cable
                 new MaterialStack(GTMaterials.Rubber, M * 2))); // plate
 
-        ChemicalHelper.registerMaterialInfo(GTMachines.HULL[9].getItem(), new ItemMaterialInfo(
+        ChemicalHelper.registerMaterialInfo(GTMachines.HULL[9].getBlock(), new ItemMaterialInfo(
                 new MaterialStack(GTMaterials.Neutronium, M * 8), // plate
                 new MaterialStack(GTMaterials.Europium, M), // single cable
                 new MaterialStack(GTMaterials.Rubber, M * 2))); // plate
@@ -170,7 +169,7 @@ public class MaterialInfoLoader {
         //        new MaterialStack(GTMaterials.Glass, M / 2) // 1 block / 2
         //));
 
-        ChemicalHelper.registerMaterialInfo(GTBlocks.CASING.get().getItemVariant(CasingBlock.CasingType.PRIMITIVE_BRICKS).getItem(), new ItemMaterialInfo(new MaterialStack(GTMaterials.Fireclay, M * 4)));
+        ChemicalHelper.registerMaterialInfo(GTBlocks.CASING_PRIMITIVE_BRICKS.get(), new ItemMaterialInfo(new MaterialStack(GTMaterials.Fireclay, M * 4)));
 
         if (ConfigHolder.recipes.hardWoodRecipes) {
             ChemicalHelper.registerMaterialInfo(Items.ACACIA_DOOR, new ItemMaterialInfo(new MaterialStack(GTMaterials.Wood, M * 2), new MaterialStack(GTMaterials.Iron, M / 9))); // screw

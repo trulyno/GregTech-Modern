@@ -3,6 +3,7 @@ package com.gregtechceu.gtceu.common.data;
 import com.google.common.collect.ImmutableTable;
 import com.google.common.collect.Table;
 import com.gregtechceu.gtceu.GTCEu;
+import com.gregtechceu.gtceu.api.GTValues;
 import com.gregtechceu.gtceu.api.data.chemical.ChemicalHelper;
 import com.gregtechceu.gtceu.api.item.MaterialPipeBlockItem;
 import com.gregtechceu.gtceu.client.renderer.block.OreBlockRenderer;
@@ -24,20 +25,17 @@ import com.gregtechceu.gtceu.utils.FormattingUtil;
 import com.tterrag.registrate.builders.BlockBuilder;
 import com.tterrag.registrate.builders.ItemBuilder;
 import com.tterrag.registrate.providers.ProviderType;
-import com.tterrag.registrate.providers.loot.RegistrateBlockLootTables;
 import com.tterrag.registrate.util.entry.BlockEntry;
 import com.tterrag.registrate.util.nullness.NonNullBiConsumer;
 import com.tterrag.registrate.util.nullness.NonNullFunction;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockBehaviour;
-import net.minecraft.world.level.storage.loot.entries.LootItem;
-import net.minecraft.world.level.storage.loot.functions.ApplyBonusCount;
 import net.minecraftforge.client.model.generators.ConfiguredModel;
 
 import javax.annotation.Nonnull;
@@ -212,67 +210,135 @@ public class GTBlocks {
     //******     Casing Blocks     *****//
     //////////////////////////////////////
 
-    public final static BlockEntry<CasingBlock> CASING = REGISTRATE.block("casing", CasingBlock::new)
-            .initialProperties(() -> Blocks.IRON_BLOCK)
-            .addLayer(() -> RenderType::cutoutMipped)
-            .blockstate((ctx, prov) -> prov.getVariantBuilder(ctx.getEntry()).forAllStates(blockState -> ConfiguredModel.builder()
-                    .modelFile(prov.models().cubeAll("block/%s/%s".formatted(ctx.getName(), ctx.getEntry().getVariant(blockState)),
-                            ctx.getEntry().getVariant(blockState).getTexture()))
-                    .build()))
-            .tag(GTToolType.WRENCH.harvestTag, BlockTags.MINEABLE_WITH_PICKAXE)
-            .item(VariantBlockItem::new)
-            .model(NonNullBiConsumer.noop())
-            .build()
-            .register();
+    public static final BlockEntry<Block> CASING_BRONZE_BRICKS = createCasingBlock("bronze_bricks", GTCEu.id("block/casings/solid/machine_bronze_plated_bricks"));
+    public static final BlockEntry<Block> CASING_PRIMITIVE_BRICKS = createCasingBlock("primitive_bricks", GTCEu.id("block/casings/solid/machine_primitive_bricks"));
+    public static final BlockEntry<Block> CASING_INVAR_HEATPROOF = createCasingBlock("invar_heatproof", GTCEu.id("block/casings/solid/machine_casing_heatproof"));
+    public static final BlockEntry<Block> CASING_ALUMINIUM_FROSTPROOF = createCasingBlock("aluminium_frostproof", GTCEu.id("block/casings/solid/machine_casing_frost_proof"));
+    public static final BlockEntry<Block> CASING_STEEL_SOLID = createCasingBlock("steel_solid", GTCEu.id("block/casings/solid/machine_casing_solid_steel"));
+    public static final BlockEntry<Block> CASING_STAINLESS_CLEAN = createCasingBlock("stainless_clean", GTCEu.id("block/casings/solid/machine_casing_clean_stainless_steel"));
+    public static final BlockEntry<Block> CASING_TITANIUM_STABLE = createCasingBlock("titanium_stable", GTCEu.id("block/casings/solid/machine_casing_stable_titanium"));
+    public static final BlockEntry<Block> CASING_TUNGSTENSTEEL_ROBUST = createCasingBlock("tungstensteel_robust", GTCEu.id("block/casings/solid/machine_casing_robust_tungstensteel"));
+    public static final BlockEntry<Block> CASING_COKE_BRICKS = createCasingBlock("coke_bricks", GTCEu.id("block/casings/solid/machine_coke_bricks"));
+    public static final BlockEntry<Block> CASING_PTFE_INERT = createCasingBlock("ptfe_inert", GTCEu.id("block/casings/solid/machine_casing_inert_ptfe"));
+    public static final BlockEntry<Block> CASING_HSSE_STURDY = createCasingBlock("hsse_sturdy", GTCEu.id("block/casings/solid/machine_casing_study_hsse"));
+    public static final BlockEntry<Block> CASING_GRATE = createCasingBlock("grate", GTCEu.id("block/casings/pipe/machine_casing_grate"));
+    public static final BlockEntry<Block> CASING_ASSEMBLY_CONTROL = createCasingBlock("assembly_control", GTCEu.id("block/casings/mechanic/machine_casing_assembly_control"));
+    public static final BlockEntry<Block> CASING_ASSEMBLY_LINE = createCasingBlock("assembly_line", GTCEu.id("block/casings/pipe/machine_casing_grate"));
+    public static final BlockEntry<Block> CASING_POLYTETRAFLUOROETHYLENE_PIPE = createCasingBlock("polytetrafluoroethylene_pipe", GTCEu.id("block/casings/pipe/machine_casing_pipe_polytetrafluoroethylene"));
+    public static final BlockEntry<Block> CASING_LAMINATED_GLASS = createCasingBlock("laminated_glass", GTCEu.id("block/casings/transparent/laminated_glass"));
+    public static final BlockEntry<Block> CASING_BRONZE_GEARBOX = createCasingBlock("bronze_gearbox", GTCEu.id("block/casings/gearbox/machine_casing_gearbox_bronze"));
+    public static final BlockEntry<Block> CASING_STEEL_GEARBOX = createCasingBlock("steel_gearbox", GTCEu.id("block/casings/gearbox/machine_casing_gearbox_steel"));
+    public static final BlockEntry<Block> CASING_STAINLESS_STEEL_GEARBOX = createCasingBlock("stainless_steel_gearbox", GTCEu.id("block/casings/gearbox/machine_casing_gearbox_stainless_steel"));
+    public static final BlockEntry<Block> CASING_TITANIUM_GEARBOX = createCasingBlock("titanium_gearbox", GTCEu.id("block/casings/gearbox/machine_casing_gearbox_titanium"));
+    public static final BlockEntry<Block> CASING_TUNGSTENSTEEL_GEARBOX = createCasingBlock("tungstensteel_gearbox", GTCEu.id("block/casings/gearbox/machine_casing_gearbox_tungstensteel"));
+    public static final BlockEntry<Block> CASING_STEEL_TURBINE = createCasingBlock("steel_turbine", GTCEu.id("block/casings/mechanic/machine_casing_turbine_steel"));
+    public static final BlockEntry<Block> CASING_TITANIUM_TURBINE = createCasingBlock("titanium_turbine", GTCEu.id("block/casings/mechanic/machine_casing_turbine_titanium"));
+    public static final BlockEntry<Block> CASING_STAINLESS_TURBINE = createCasingBlock("stainless_turbine", GTCEu.id("block/casings/mechanic/machine_casing_turbine_stainless_steel"));
+    public static final BlockEntry<Block> CASING_TUNGSTENSTEEL_TURBINE = createCasingBlock("tungstensteel_turbine", GTCEu.id("block/casings/mechanic/machine_casing_turbine_tungstensteel"));
+    public static final BlockEntry<Block> CASING_BRONZE_PIPE = createCasingBlock("bronze_pipe", GTCEu.id("block/casings/pipe/machine_casing_pipe_bronze"));
+    public static final BlockEntry<Block> CASING_STEEL_PIPE = createCasingBlock("steel_pipe", GTCEu.id("block/casings/pipe/machine_casing_pipe_steel"));
+    public static final BlockEntry<Block> CASING_TITANIUM_PIPE = createCasingBlock("titanium_pipe", GTCEu.id("block/casings/pipe/machine_casing_pipe_titanium"));
+    public static final BlockEntry<Block> CASING_TUNGSTENSTEEL_PIPE = createCasingBlock("tungstensteel_pipe", GTCEu.id("block/casings/pipe/machine_casing_pipe_tungstensteel"));
+    // todo primitive pump
+    //PUMP_DECK("pump_deck", GTCEu.id("")),
+    //WOOD_WALL("wood_wall", GTCEu.id(""));
 
-    public final static BlockEntry<HullCasingBlock> HULL_CASING = REGISTRATE.block("hull_casing", HullCasingBlock::new)
-            .initialProperties(() -> Blocks.IRON_BLOCK)
-            .addLayer(() -> RenderType::cutoutMipped)
-            .blockstate((ctx, prov) -> prov.getVariantBuilder(ctx.getEntry()).forAllStates(blockState -> ConfiguredModel.builder()
-                    .modelFile(prov.models().withExistingParent("block/%s/%s".formatted(ctx.getName(), ctx.getEntry().getVariant(blockState)),
-                            GTCEu.id("block/cube_bottom_top_tintindex"))
-                            .texture("bottom", ctx.getEntry().getVariant(blockState).getBottomTexture())
-                            .texture("top", ctx.getEntry().getVariant(blockState).getTopTexture())
-                            .texture("side", ctx.getEntry().getVariant(blockState).getSideTexture()))
-                    .build()))
-            .tag(GTToolType.WRENCH.harvestTag, BlockTags.MINEABLE_WITH_PICKAXE)
-            .item(VariantBlockItem::new)
-            .model(NonNullBiConsumer.noop())
-            .build()
-            .register();
+    public static final BlockEntry<Block> MACHINE_CASING_ULV = createMachineCasingBlock(GTValues.ULV);
+    public static final BlockEntry<Block> MACHINE_CASING_LV = createMachineCasingBlock(GTValues.LV);
+    public static final BlockEntry<Block> MACHINE_CASING_MV = createMachineCasingBlock(GTValues.MV);
+    public static final BlockEntry<Block> MACHINE_CASING_HV = createMachineCasingBlock(GTValues.HV);
+    public static final BlockEntry<Block> MACHINE_CASING_EV = createMachineCasingBlock(GTValues.EV);
+    public static final BlockEntry<Block> MACHINE_CASING_IV = createMachineCasingBlock(GTValues.IV);
+    public static final BlockEntry<Block> MACHINE_CASING_LuV = createMachineCasingBlock(GTValues.LuV);
+    public static final BlockEntry<Block> MACHINE_CASING_ZPM = createMachineCasingBlock(GTValues.ZPM);
+    public static final BlockEntry<Block> MACHINE_CASING_UV = createMachineCasingBlock(GTValues.UV);
+    public static final BlockEntry<Block> MACHINE_CASING_UHV = createMachineCasingBlock(GTValues.UHV);
+    public static final BlockEntry<Block> MACHINE_CASING_UEV = createMachineCasingBlock(GTValues.UEV);
+    public static final BlockEntry<Block> MACHINE_CASING_UIV = createMachineCasingBlock(GTValues.UIV);
+    public static final BlockEntry<Block> MACHINE_CASING_UXV = createMachineCasingBlock(GTValues.UXV);
+    public static final BlockEntry<Block> MACHINE_CASING_OpV = createMachineCasingBlock(GTValues.OpV);
+    public static final BlockEntry<Block> MACHINE_CASING_MAX = createMachineCasingBlock(GTValues.MAX);
 
-    public final static BlockEntry<HermeticCasingBlock> HERMETIC_CASING = REGISTRATE.block("hermetic_casing", HermeticCasingBlock::new)
-            .initialProperties(() -> Blocks.IRON_BLOCK)
-            .addLayer(() -> RenderType::cutoutMipped)
-            .blockstate((ctx, prov) -> prov.getVariantBuilder(ctx.getEntry()).forAllStates(blockState -> ConfiguredModel.builder()
-                    .modelFile(prov.models().withExistingParent("block/%s/%s".formatted(ctx.getName(), ctx.getEntry().getVariant(blockState)),
-                            GTCEu.id("block/hermetic_casing"))
-                            .texture("bot_bottom", ctx.getEntry().getVariant(blockState).getBottomTexture())
-                            .texture("bot_top", ctx.getEntry().getVariant(blockState).getTopTexture())
-                            .texture("bot_side", ctx.getEntry().getVariant(blockState).getSideTexture())
-                            .texture("top_side", GTCEu.id("block/casings/hermetic_casing/hermetic_casing_overlay")))
-                    .build()))
-            .tag(GTToolType.WRENCH.harvestTag, BlockTags.MINEABLE_WITH_PICKAXE)
-            .item(VariantBlockItem::new)
-            .model(NonNullBiConsumer.noop())
-            .build()
-            .register();
+    public static final BlockEntry<Block> HERMETIC_CASING_ULV = createHermeticCasing(GTValues.ULV);
+    public static final BlockEntry<Block> HERMETIC_CASING_LV = createHermeticCasing(GTValues.LV);
+    public static final BlockEntry<Block> HERMETIC_CASING_MV = createHermeticCasing(GTValues.MV);
+    public static final BlockEntry<Block> HERMETIC_CASING_HV = createHermeticCasing(GTValues.HV);
+    public static final BlockEntry<Block> HERMETIC_CASING_EV = createHermeticCasing(GTValues.EV);
+    public static final BlockEntry<Block> HERMETIC_CASING_IV = createHermeticCasing(GTValues.IV);
+    public static final BlockEntry<Block> HERMETIC_CASING_LuV = createHermeticCasing(GTValues.LuV);
+    public static final BlockEntry<Block> HERMETIC_CASING_ZPM = createHermeticCasing(GTValues.ZPM);
+    public static final BlockEntry<Block> HERMETIC_CASING_UV = createHermeticCasing(GTValues.UV);
+    public static final BlockEntry<Block> HERMETIC_CASING_UHV = createHermeticCasing(GTValues.UHV);
 
-    public final static BlockEntry<SteamCasingBlock> STEAM_CASING = REGISTRATE.block("steam_casing", SteamCasingBlock::new)
-            .initialProperties(() -> Blocks.IRON_BLOCK)
-            .addLayer(() -> RenderType::cutoutMipped)
-            .blockstate((ctx, prov) -> prov.getVariantBuilder(ctx.getEntry()).forAllStates(blockState -> ConfiguredModel.builder()
-                    .modelFile(prov.models().withExistingParent("block/%s/%s".formatted(ctx.getName(), ctx.getEntry().getVariant(blockState)),
-                                    new ResourceLocation("minecraft:cube_bottom_top"))
-                            .texture("bottom", ctx.getEntry().getVariant(blockState).getBottomTexture())
-                            .texture("top", ctx.getEntry().getVariant(blockState).getTopTexture())
-                            .texture("side", ctx.getEntry().getVariant(blockState).getSideTexture()))
-                    .build()))
-            .tag(GTToolType.WRENCH.harvestTag, BlockTags.MINEABLE_WITH_PICKAXE)
-            .item(VariantBlockItem::new)
-            .model(NonNullBiConsumer.noop())
-            .build()
-            .register();
+    public static final BlockEntry<Block> BRONZE_HULL = createSteamCasing("bronze");
+    public static final BlockEntry<Block> BRONZE_BRICKS_HULL = createSteamCasing("bricked_bronze");
+    public static final BlockEntry<Block> STEEL_HULL = createSteamCasing("steel");
+    public static final BlockEntry<Block> STEEL_BRICKS_HULL = createSteamCasing("bricked_steel");
+
+    private static BlockEntry<Block> createCasingBlock(String name, ResourceLocation texture) {
+        return REGISTRATE.block("casing_%s".formatted(name), Block::new)
+                .initialProperties(() -> Blocks.IRON_BLOCK)
+                .addLayer(() -> RenderType::cutoutMipped)
+                .blockstate((ctx, prov) ->  prov.simpleBlock(ctx.getEntry(), ConfiguredModel.builder()
+                        .modelFile(prov.models().cubeAll("block/casing/%s".formatted(ctx.getName()), texture)).build()))
+                .tag(GTToolType.WRENCH.harvestTag, BlockTags.MINEABLE_WITH_PICKAXE)
+                .item(BlockItem::new)
+                .build()
+                .register();
+    }
+
+    private static BlockEntry<Block> createMachineCasingBlock(int tier) {
+        String tierName = GTValues.VN[tier].toLowerCase();
+        return REGISTRATE.block("hull_casing_%s".formatted(tierName), Block::new)
+                .initialProperties(() -> Blocks.IRON_BLOCK)
+                .addLayer(() -> RenderType::cutoutMipped)
+                .blockstate((ctx, prov) -> prov.simpleBlock(ctx.getEntry(), ConfiguredModel.builder()
+                        .modelFile(prov.models().withExistingParent("block/hull_casing/%s".formatted(tierName),
+                                GTCEu.id("block/cube_bottom_top_tintindex"))
+                                .texture("bottom", GTCEu.id("block/casings/voltage/%s/bottom".formatted(tierName)))
+                                .texture("top", GTCEu.id("block/casings/voltage/%s/top".formatted(tierName)))
+                                .texture("side", GTCEu.id("block/casings/voltage/%s/side".formatted(tierName))))
+                        .build()))
+                .tag(GTToolType.WRENCH.harvestTag, BlockTags.MINEABLE_WITH_PICKAXE)
+                .item(BlockItem::new)
+                .build()
+                .register();
+    }
+
+    private static BlockEntry<Block> createHermeticCasing(int tier) {
+        String tierName = GTValues.VN[tier].toLowerCase();
+        return REGISTRATE.block("hermetic_casing_%s".formatted(tierName), Block::new)
+                .initialProperties(() -> Blocks.IRON_BLOCK)
+                .addLayer(() -> RenderType::cutoutMipped)
+                .blockstate((ctx, prov) -> prov.simpleBlock(ctx.getEntry(), ConfiguredModel.builder()
+                        .modelFile(prov.models().withExistingParent("block/hermetic_casing/%s".formatted(tierName), GTCEu.id("block/hermetic_casing"))
+                                .texture("bot_bottom", GTCEu.id("block/casings/voltage/%s/bottom".formatted(tierName)))
+                                .texture("bot_top", GTCEu.id("block/casings/voltage/%s/top".formatted(tierName)))
+                                .texture("bot_side", GTCEu.id("block/casings/voltage/%s/side".formatted(tierName)))
+                                .texture("top_side", GTCEu.id("block/casings/hermetic_casing/hermetic_casing_overlay")))
+                        .build()))
+                .tag(GTToolType.WRENCH.harvestTag, BlockTags.MINEABLE_WITH_PICKAXE)
+                .item(BlockItem::new)
+                .build()
+                .register();
+    }
+
+    private static BlockEntry<Block> createSteamCasing(String name) {
+        return REGISTRATE.block("steam_casing_%s".formatted("name"), Block::new)
+                .initialProperties(() -> Blocks.IRON_BLOCK)
+                .addLayer(() -> RenderType::cutoutMipped)
+                .blockstate((ctx, prov) -> prov.simpleBlock(ctx.getEntry(), ConfiguredModel.builder()
+                        .modelFile(prov.models().withExistingParent("block/steam_casing/%s".formatted(name),
+                                        new ResourceLocation("minecraft:cube_bottom_top"))
+                                .texture("bottom", GTCEu.id("block/casings/steam/%s/bottom".formatted(name)))
+                                .texture("top", GTCEu.id("block/casings/steam/%s/top".formatted(name)))
+                                .texture("side", GTCEu.id("block/casings/steam/%s/side".formatted(name))))
+                        .build()))
+                .tag(GTToolType.WRENCH.harvestTag, BlockTags.MINEABLE_WITH_PICKAXE)
+                .item(BlockItem::new)
+                .build()
+                .register();
+    }
 
     public final static BlockEntry<CoilBlock> WIRE_COIL = REGISTRATE.block("wire_coil", CoilBlock::new)
             .initialProperties(() -> Blocks.IRON_BLOCK)

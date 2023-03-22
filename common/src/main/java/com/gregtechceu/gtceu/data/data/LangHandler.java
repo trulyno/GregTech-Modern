@@ -45,11 +45,11 @@ public class LangHandler {
         provider.add(GTCreativeModeTabs.MACHINE, toEnglishName(GTCreativeModeTabs.MACHINE.getGroupId()));
         provider.add(GTCreativeModeTabs.ITEM, toEnglishName(GTCreativeModeTabs.ITEM.getGroupId()));
         // Casings
-        casingLang(provider, GTBlocks.CASING.get());
+        //casingLang(provider, GTBlocks.CASING.get()); todo
         casingLang(provider, GTBlocks.WIRE_COIL.get());
         casingLang(provider, GTBlocks.ACTIVE_CASING.get());
         casingLang(provider, GTBlocks.BOILER_FIREBOX_CASING.get());
-        casingLang(provider, GTBlocks.HULL_CASING.get());
+        //casingLang(provider, GTBlocks.HULL_CASING.get()); todo
 
         provider.add("death.attack.heat", "%s was boiled alive");
         provider.add("death.attack.frost", "%s explored cryogenics");
