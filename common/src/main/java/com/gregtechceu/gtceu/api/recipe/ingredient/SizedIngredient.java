@@ -16,6 +16,8 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.stream.Stream;
 
 public class SizedIngredient extends Ingredient {
@@ -106,12 +108,15 @@ public class SizedIngredient extends Ingredient {
 
     @Override
     public ItemStack @NotNull [] getItems() {
-        if (itemStacks == null)
-            itemStacks = Arrays.stream(inner.getItems()).map(i -> {
-                ItemStack ic = i.copy();
-                ic.setCount(amount);
-                return ic;
-            }).toArray(ItemStack[]::new);
+        if (itemStacks == null){
+            Set<ItemStack> stacks = new HashSet<>();
+            Arrays.stream(inner.values).flatMap(value -> value.getItems().stream()).distinct().forEach(stack -> {
+                stack = stack.copy();
+                stack.setCount(amount);
+                stacks.add(stack);
+            });
+            itemStacks = stacks.toArray(ItemStack[]::new);
+        }
         return itemStacks;
     }
 
