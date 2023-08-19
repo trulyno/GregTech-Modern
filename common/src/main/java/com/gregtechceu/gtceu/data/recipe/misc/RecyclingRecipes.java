@@ -152,7 +152,8 @@ public class RecyclingRecipes {
                 return;
             }
 
-            GTRecipeBuilder builder = GTRecipeTypes.EXTRACTOR_RECIPES.recipeBuilder("extract_" + input.getItem())
+            ResourceLocation item_id = Registry.ITEM.getKey(input.getItem());
+            GTRecipeBuilder builder = GTRecipeTypes.EXTRACTOR_RECIPES.recipeBuilder("extract_" + item_id.getNamespace() + "_" + item_id.getPath())
                     .outputFluids(m.getFluid((int) (ms.amount() * L / M)))
                     .duration((int) Math.max(1, ms.amount() * ms.material().getMass() / M))
                     .EUt((long) GTValues.VA[GTValues.LV] * multiplier);
@@ -184,7 +185,8 @@ public class RecyclingRecipes {
         duration = Math.max(1L, duration / M);
 
         // Build the final Recipe.
-        GTRecipeBuilder extractorBuilder = GTRecipeTypes.EXTRACTOR_RECIPES.recipeBuilder("extract_" + input.getItem())
+        ResourceLocation item_id = Registry.ITEM.getKey(input.getItem());
+        GTRecipeBuilder extractorBuilder = GTRecipeTypes.EXTRACTOR_RECIPES.recipeBuilder("extract_" + item_id.getNamespace() + "_" + item_id.getPath())
                 .outputFluids(fluidMs.material().getFluid((int) (fluidMs.amount() * L / M)))
                 .duration((int) duration)
                 .EUt((long) GTValues.VA[GTValues.LV] * multiplier);
@@ -221,7 +223,8 @@ public class RecyclingRecipes {
         } else if (prefix == TagPrefix.block) {
             if (ms != null && !ms.material().hasProperty(PropertyKey.GEM)) {
                 ItemStack output = ChemicalHelper.get(TagPrefix.ingot, ms.material().getProperty(PropertyKey.INGOT).getArcSmeltInto(), 9);
-                GTRecipeBuilder builder = GTRecipeTypes.ARC_FURNACE_RECIPES.recipeBuilder("arc_" + input.getItem())
+                ResourceLocation item_id = Registry.ITEM.getKey(input.getItem());
+                GTRecipeBuilder builder = GTRecipeTypes.ARC_FURNACE_RECIPES.recipeBuilder("arc_" + item_id.getNamespace() + "_" + item_id.getPath())
                         .outputItems(output)
                         .duration(calculateDuration(Collections.singletonList(output)))
                         .EUt(GTValues.VA[GTValues.LV]);
@@ -254,7 +257,8 @@ public class RecyclingRecipes {
         if (outputs.size() == 0) return;
 
         // Build the final Recipe.
-        GTRecipeBuilder builder = GTRecipeTypes.ARC_FURNACE_RECIPES.recipeBuilder("arc_" + input.getItem())
+        ResourceLocation item_id = Registry.ITEM.getKey(input.getItem());
+        GTRecipeBuilder builder = GTRecipeTypes.ARC_FURNACE_RECIPES.recipeBuilder("arc_" + item_id.getNamespace() + "_" + item_id.getPath())
                 .outputItems(outputs.toArray(ItemStack[]::new))
                 .duration(calculateDuration(outputs))
                 .EUt(GTValues.VA[GTValues.LV]);
