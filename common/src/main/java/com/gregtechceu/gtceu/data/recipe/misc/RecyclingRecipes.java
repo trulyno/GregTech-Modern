@@ -15,7 +15,9 @@ import com.gregtechceu.gtceu.common.data.GTMaterials;
 import com.gregtechceu.gtceu.common.data.GTRecipeTypes;
 import com.gregtechceu.gtceu.data.recipe.builder.GTRecipeBuilder;
 import com.gregtechceu.gtceu.utils.GTUtil;
+import net.minecraft.core.Registry;
 import net.minecraft.data.recipes.FinishedRecipe;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.util.Tuple;
 import net.minecraft.world.item.Item;
@@ -115,7 +117,8 @@ public class RecyclingRecipes {
         if (outputs.size() == 0) return;
 
         // Build the final Recipe.
-        GTRecipeBuilder builder = GTRecipeTypes.MACERATOR_RECIPES.recipeBuilder("macerate_" + input.getItem())
+        ResourceLocation item_id = Registry.ITEM.getKey(input.getItem());
+        GTRecipeBuilder builder = GTRecipeTypes.MACERATOR_RECIPES.recipeBuilder("macerate_" + item_id.getNamespace() + "_" + item_id.getPath())
                 .outputItems(outputs.toArray(ItemStack[]::new))
                 .duration(calculateDuration(outputs))
                 .EUt(2L * multiplier);
