@@ -173,12 +173,12 @@ public abstract class CoverBehavior implements IEnhancedManaged, IToolGridHighLi
     }
 
     @Override
-    public boolean shouldRenderGrid(Player player, ItemStack held, GTToolType toolType) {
+    public boolean shouldRenderGrid(Player player, BlockPos pos, BlockState state, ItemStack held, GTToolType toolType) {
         return toolType == GTToolType.CROWBAR || (toolType == GTToolType.SCREWDRIVER && this instanceof IUICover);
     }
 
     @Override
-    public ResourceTexture sideTips(Player player, GTToolType toolType, Direction side) {
+    public ResourceTexture sideTips(Player player, BlockPos pos, BlockState state, GTToolType toolType, Direction side) {
         if (toolType == GTToolType.CROWBAR) {
             return GuiTextures.TOOL_REMOVE_COVER;
         }

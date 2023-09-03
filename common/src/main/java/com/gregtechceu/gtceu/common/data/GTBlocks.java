@@ -9,6 +9,7 @@ import com.gregtechceu.gtceu.api.addon.AddonFinder;
 import com.gregtechceu.gtceu.api.addon.events.MaterialCasingCollectionEvent;
 import com.gregtechceu.gtceu.api.block.*;
 import com.gregtechceu.gtceu.api.data.chemical.ChemicalHelper;
+import com.gregtechceu.gtceu.api.item.AMHSRailBlockItem;
 import com.gregtechceu.gtceu.api.item.MaterialPipeBlockItem;
 import com.gregtechceu.gtceu.api.item.RendererBlockItem;
 import com.gregtechceu.gtceu.api.data.tag.TagUtil;
@@ -277,6 +278,48 @@ public class GTBlocks {
         } else tags[1] = BlockTags.MINEABLE_WITH_PICKAXE;
         return tags;
     }
+
+    static {
+        REGISTRATE.creativeModeTab(() -> GTCreativeModeTabs.MATERIAL_PIPE);
+    }
+
+    public static BlockEntry<NormalRailBlock> NORMAL_RAIL = REGISTRATE.block( "normal_rail", NormalRailBlock::new)
+            .initialProperties(() -> Blocks.IRON_BLOCK)
+            .properties(p -> p.dynamicShape().noOcclusion())
+            .blockstate(NonNullBiConsumer.noop())
+            .setData(ProviderType.LANG, NonNullBiConsumer.noop())
+            .setData(ProviderType.LOOT, NonNullBiConsumer.noop())
+            .addLayer(() -> RenderType::cutoutMipped)
+            .onRegister(NormalRailBlock::onRegister)
+            .item(AMHSRailBlockItem::new)
+            .model(NonNullBiConsumer.noop())
+            .build()
+            .register();
+
+    public static BlockEntry<FOUPRailBlock> FOUP_RAIL = REGISTRATE.block( "foup_rail", FOUPRailBlock::new)
+            .initialProperties(() -> Blocks.IRON_BLOCK)
+            .properties(p -> p.dynamicShape().noOcclusion())
+            .blockstate(NonNullBiConsumer.noop())
+            .setData(ProviderType.LANG, NonNullBiConsumer.noop())
+            .setData(ProviderType.LOOT, NonNullBiConsumer.noop())
+            .addLayer(() -> RenderType::cutoutMipped)
+            .onRegister(FOUPRailBlock::onRegister)
+            .item(AMHSRailBlockItem::new)
+            .model(NonNullBiConsumer.noop())
+            .build()
+            .register();
+
+    public static BlockEntry<FOUPFunnelBlock> FOUP_FUNNEL = REGISTRATE.block( "foup_funnel", FOUPFunnelBlock::new)
+            .initialProperties(() -> Blocks.IRON_BLOCK)
+            .properties(p -> p.dynamicShape().noOcclusion())
+            .blockstate(NonNullBiConsumer.noop())
+            .setData(ProviderType.LANG, NonNullBiConsumer.noop())
+            .setData(ProviderType.LOOT, NonNullBiConsumer.noop())
+            .addLayer(() -> RenderType::cutoutMipped)
+            .item(RendererBlockItem::new)
+            .model(NonNullBiConsumer.noop())
+            .build()
+            .register();
 
     static {
         REGISTRATE.creativeModeTab(() -> GTCreativeModeTabs.DECORATION);

@@ -43,6 +43,7 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.phys.BlockHitResult;
 import org.jetbrains.annotations.Nullable;
@@ -411,7 +412,7 @@ public class BlockBreakerMachine extends TieredEnergyMachine implements IAutoOut
     //*******     Rendering     ********//
     //////////////////////////////////////
     @Override
-    public ResourceTexture sideTips(Player player, GTToolType toolType, Direction side) {
+    public ResourceTexture sideTips(Player player, BlockPos pos, BlockState state, GTToolType toolType, Direction side) {
         if (toolType == GTToolType.WRENCH) {
             if (!player.isCrouching()) {
                 if (!hasFrontFacing() || side != getFrontFacing()) {
@@ -419,7 +420,7 @@ public class BlockBreakerMachine extends TieredEnergyMachine implements IAutoOut
                 }
             }
         }
-        return super.sideTips(player, toolType, side);
+        return super.sideTips(player, pos, state, toolType, side);
     }
 
     //////////////////////////////////////

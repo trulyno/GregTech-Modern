@@ -1391,6 +1391,18 @@ public class GTItems {
     public static ItemEntry<ComponentItem> FERTILIZER = REGISTRATE.item("fertilizer", ComponentItem::create).onRegister(attach(new FertilizerBehavior())).register();
     public static ItemEntry<Item> BLACKLIGHT = REGISTRATE.item("blacklight", Item::new).register();
 
+    public static ItemEntry<ComponentItem> FOUP_CART = REGISTRATE.item("foup_cart", ComponentItem::create)
+            .lang("FOUP Cart")
+            .onRegister(attach(new FOUPCartBehavior()))
+            .model(NonNullBiConsumer.noop())
+            .register();
+
+    public static ItemEntry<ComponentItem> FOUP_CASKET = REGISTRATE.item("foup_casket", ComponentItem::create)
+            .lang("FOUP Casket")
+            .onRegister(attach(new FOUPCasketBehavior()))
+            .model(NonNullBiConsumer.noop())
+            .register();
+
     public static void init() {
         generateMaterialItems();
         generateTools();

@@ -214,10 +214,10 @@ public abstract class PipeBlockEntity<PipeType extends Enum<PipeType> & IPipeTyp
     //*******     Interaction    *******//
     //////////////////////////////////////
     @Override
-    public boolean shouldRenderGrid(Player player, ItemStack held, GTToolType toolType) {
+    public boolean shouldRenderGrid(Player player, BlockPos pos, BlockState state, ItemStack held, GTToolType toolType) {
         if (canToolTunePipe(toolType) || toolType == GTToolType.SCREWDRIVER) return true;
         for (CoverBehavior cover : coverContainer.getCovers()) {
-            if (cover.shouldRenderGrid(player, held, toolType)) return true;
+            if (cover.shouldRenderGrid(player, pos, state, held, toolType)) return true;
         }
         return false;
     }
@@ -227,13 +227,13 @@ public abstract class PipeBlockEntity<PipeType extends Enum<PipeType> & IPipeTyp
     }
 
     @Override
-    public ResourceTexture sideTips(Player player, GTToolType toolType, Direction side) {
+    public ResourceTexture sideTips(Player player, BlockPos pos, BlockState state, GTToolType toolType, Direction side) {
         if (canToolTunePipe(toolType)) {
             return getPipeTexture(isBlocked(side));
         }
         var cover = coverContainer.getCoverAtSide(side);
         if (cover != null) {
-            return cover.sideTips(player, toolType, side);
+            return cover.sideTips(player, pos, state, toolType, side);
         }
         return null;
     }

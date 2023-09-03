@@ -1,6 +1,7 @@
 package com.gregtechceu.gtceu.api.item;
 
 import com.gregtechceu.gtceu.api.capability.GTCapabilityHelper;
+import com.gregtechceu.gtceu.api.capability.IToolable;
 import com.gregtechceu.gtceu.api.item.tool.GTToolType;
 import com.gregtechceu.gtceu.api.item.tool.MaterialToolTier;
 import com.gregtechceu.gtceu.api.item.tool.ToolHelper;
@@ -95,6 +96,9 @@ public class GTToolItem extends DiggerItem implements IItemRendererProvider, IIt
     @Override
     public InteractionResult onItemUseFirst(ItemStack itemStack, UseOnContext context) {
         var toolable = GTCapabilityHelper.getToolable(context.getLevel(), context.getClickedPos(), context.getClickedFace());
+        if (toolable == null && context.getLevel().getBlockState(context.getClickedPos()).getBlock() instanceof IToolable toolableBlock) {
+                toolable = toolableBlock;
+        }
         if (toolable != null && ToolHelper.canUse(itemStack)) {
             var result = toolable.onToolClick(getToolType(), itemStack, context);
             if (result == InteractionResult.CONSUME && context.getPlayer() instanceof ServerPlayer serverPlayer) {

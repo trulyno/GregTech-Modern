@@ -24,10 +24,12 @@ import com.lowdragmc.lowdraglib.syncdata.field.ManagedFieldHolder;
 import lombok.Getter;
 import lombok.Setter;
 import net.minecraft.MethodsReturnNonnullByDefault;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -136,7 +138,7 @@ public abstract class SteamWorkableMachine extends SteamMachine implements IReci
     //*******     Rendering     ********//
     //////////////////////////////////////
     @Override
-    public ResourceTexture sideTips(Player player, GTToolType toolType, Direction side) {
+    public ResourceTexture sideTips(Player player, BlockPos pos, BlockState state, GTToolType toolType, Direction side) {
         if (toolType == GTToolType.WRENCH) {
             if (!player.isCrouching()) {
                 if (!hasFrontFacing() || side != getFrontFacing()) {
@@ -144,6 +146,6 @@ public abstract class SteamWorkableMachine extends SteamMachine implements IReci
                 }
             }
         }
-        return super.sideTips(player, toolType, side);
+        return super.sideTips(player, pos, state, toolType, side);
     }
 }

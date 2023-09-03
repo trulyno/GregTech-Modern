@@ -104,13 +104,13 @@ public class KineticMachineBlockEntity extends KineticBlockEntity implements IMa
     }
 
     @Override
-    public boolean shouldRenderGrid(Player player, ItemStack held, GTToolType toolType) {
-        return metaMachine.shouldRenderGrid(player, held, toolType);
+    public boolean shouldRenderGrid(Player player, BlockPos pos, BlockState state, ItemStack held, GTToolType toolType) {
+        return metaMachine.shouldRenderGrid(player, pos, state, held, toolType);
     }
 
     @Override
-    public ResourceTexture sideTips(Player player, GTToolType toolType, Direction side) {
-        return metaMachine.sideTips(player, toolType, side);
+    public ResourceTexture sideTips(Player player, BlockPos pos, BlockState state, GTToolType toolType, Direction side) {
+        return metaMachine.sideTips(player, pos, state, toolType, side);
     }
 
     //////////////////////////////////////

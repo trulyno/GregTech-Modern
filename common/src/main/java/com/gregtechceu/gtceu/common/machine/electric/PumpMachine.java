@@ -33,6 +33,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.LiquidBlock;
+import net.minecraft.world.level.block.state.BlockState;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.ArrayDeque;
@@ -264,7 +265,7 @@ public class PumpMachine extends TieredEnergyMachine implements IAutoOutputFluid
     //*******     Rendering     ********//
     //////////////////////////////////////
     @Override
-    public ResourceTexture sideTips(Player player, GTToolType toolType, Direction side) {
+    public ResourceTexture sideTips(Player player, BlockPos pos, BlockState state, GTToolType toolType, Direction side) {
         if (toolType == GTToolType.WRENCH) {
             if (player.isCrouching()) {
                 if (hasFrontFacing() && side != this.getFrontFacing() && isFacingValid(side)) {
@@ -272,7 +273,7 @@ public class PumpMachine extends TieredEnergyMachine implements IAutoOutputFluid
                 }
             }
         }
-        return super.sideTips(player, toolType, side);
+        return super.sideTips(player, pos, state, toolType, side);
     }
 
 }

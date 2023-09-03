@@ -368,17 +368,17 @@ public class MetaMachine implements IEnhancedManaged, IToolable, ITickSubscripti
     }
 
     @Override
-    public boolean shouldRenderGrid(Player player, ItemStack held, GTToolType toolType) {
+    public boolean shouldRenderGrid(Player player, BlockPos pos, BlockState state, ItemStack held, GTToolType toolType) {
         if (toolType == GTToolType.WRENCH || toolType == GTToolType.SCREWDRIVER) return true;
         if (toolType == GTToolType.HARD_HAMMER && this instanceof IMufflableMachine) return true;
         for (CoverBehavior cover : coverContainer.getCovers()) {
-            if (cover.shouldRenderGrid(player, held, toolType)) return true;
+            if (cover.shouldRenderGrid(player, pos, state, held, toolType)) return true;
         }
         return false;
     }
 
     @Override
-    public ResourceTexture sideTips(Player player, GTToolType toolType, Direction side) {
+    public ResourceTexture sideTips(Player player, BlockPos pos, BlockState state, GTToolType toolType, Direction side) {
         if (toolType == GTToolType.WRENCH) {
             if (player.isCrouching()) {
                 if (isFacingValid(side)) {
@@ -396,7 +396,7 @@ public class MetaMachine implements IEnhancedManaged, IToolable, ITickSubscripti
         }
         var cover = coverContainer.getCoverAtSide(side);
         if (cover != null) {
-            return cover.sideTips(player, toolType, side);
+            return cover.sideTips(player, pos, state, toolType, side);
         }
         return null;
     }
