@@ -1,14 +1,20 @@
 package com.gregtechceu.gtceu.utils.forge;
 
 import com.gregtechceu.gtceu.data.recipe.CustomTags;
+import com.gregtechceu.gtceu.forge.core.mixins.PartialNbtIngredientAccessor;
 import com.lowdragmc.lowdraglib.side.fluid.FluidHelper;
 import net.minecraft.core.Holder;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.tags.BiomeTags;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.common.Tags;
+import net.minecraftforge.common.crafting.PartialNBTIngredient;
+import net.minecraftforge.common.crafting.StrictNBTIngredient;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * @author KilaBash
@@ -46,5 +52,15 @@ public class GTUtilImpl {
             return FluidHelper.getBucket() * 170 / 1000;
         }
         return FluidHelper.getBucket() / 10;
+    }
+
+    @Nullable
+    public static CompoundTag getIngredientTag(Ingredient ingredient) {
+        if (ingredient instanceof PartialNBTIngredient partialNBTIngredient) {
+            return ((PartialNbtIngredientAccessor)partialNBTIngredient).getNbt();
+        } else if (ingredient instanceof StrictNBTIngredient strictNBTIngredient) {
+            return strictNBTIngredient.getItems()[0].getTag();
+        }
+        return null;
     }
 }

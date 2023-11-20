@@ -1,13 +1,20 @@
 package com.gregtechceu.gtceu.utils.fabric;
 
 import com.gregtechceu.gtceu.data.recipe.CustomTags;
+import com.gregtechceu.gtceu.fabric.core.mixins.NbtIngredientAccessor;
 import com.lowdragmc.lowdraglib.side.fluid.FluidHelper;
+import net.fabricmc.fabric.api.recipe.v1.ingredient.CustomIngredient;
 import net.fabricmc.fabric.api.registry.FuelRegistry;
 import net.fabricmc.fabric.api.tag.convention.v1.ConventionalBiomeTags;
+import net.fabricmc.fabric.impl.recipe.ingredient.CustomIngredientImpl;
+import net.fabricmc.fabric.impl.recipe.ingredient.builtin.NbtIngredient;
 import net.minecraft.core.Holder;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.tags.BiomeTags;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.biome.Biome;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * @author KilaBash
@@ -46,5 +53,13 @@ public class GTUtilImpl {
             return FluidHelper.getBucket() * 170 / 1000;
         }
         return FluidHelper.getBucket() / 10;
+    }
+
+    @Nullable
+    public static CompoundTag getIngredientTag(Ingredient ingredient) {
+        if (ingredient instanceof CustomIngredientImpl nbtIngredient) {
+            return ((NbtIngredientAccessor)nbtIngredient.getCustomIngredient()).getNbt();
+        }
+        return null;
     }
 }
