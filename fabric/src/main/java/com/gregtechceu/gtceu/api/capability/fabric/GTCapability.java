@@ -44,4 +44,7 @@ public class GTCapability {
 
     public static final BlockApiLookup<ILaserContainer, Direction> CAPABILITY_LASER =
             BlockApiLookup.get(GTCEu.id("laser_container"), ILaserContainer.class, Direction.class);
+
+    public static final BlockApiLookup<IOpticalComputationProvider, Direction> CABABILITY_COMPUTATION_PROVIDER =
+            BlockApiLookup.get(GTCEu.id("computation_provider"), IOpticalComputationProvider.class, Direction.class);
 }

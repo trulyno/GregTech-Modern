@@ -132,6 +132,13 @@ public class MetaMachineBlockEntityImpl extends MetaMachineBlockEntity {
             var list = ((IMachineBlockEntity)blockEntity).getMetaMachine().getTraits().stream().filter(ILaserContainer.class::isInstance).filter(t -> t.hasCapability(side)).map(ILaserContainer.class::cast).toList();
             return list.isEmpty() ? null : list.size() == 1 ? list.get(0) : new LaserContainerList(list);
         }, type);
+        GTCapability.CABABILITY_COMPUTATION_PROVIDER.registerForBlockEntity((blockEntity, side) -> {
+            if (((IMachineBlockEntity)blockEntity).getMetaMachine() instanceof IOpticalComputationProvider computationProvider) {
+                return computationProvider;
+            }
+            var list = ((IMachineBlockEntity)blockEntity).getMetaMachine().getTraits().stream().filter(IOpticalComputationProvider.class::isInstance).filter(t -> t.hasCapability(side)).map(IOpticalComputationProvider.class::cast).toList();
+            return list.isEmpty() ? null : list.get(0);
+        }, type);
         if (GTCEu.isRebornEnergyLoaded()) {
             EnergyStorage.SIDED.registerForBlockEntity((blockEntity, side) -> {
                 if (((IMachineBlockEntity)blockEntity).getMetaMachine() instanceof IPlatformEnergyStorage platformEnergyStorage) {

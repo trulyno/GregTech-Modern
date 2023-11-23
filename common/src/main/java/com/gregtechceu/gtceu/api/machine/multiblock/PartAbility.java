@@ -1,5 +1,7 @@
 package com.gregtechceu.gtceu.api.machine.multiblock;
 
+import com.gregtechceu.gtceu.api.capability.IObjectHolder;
+import com.gregtechceu.gtceu.api.capability.IOpticalComputationHatch;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import lombok.Getter;
@@ -38,6 +40,12 @@ public class PartAbility {
     public static final PartAbility PARALLEL_HATCH = new PartAbility("parallel_hatch");
     public static final PartAbility INPUT_LASER = new PartAbility("input_laser");
     public static final PartAbility OUTPUT_LASER = new PartAbility("output_laser");
+
+    public static final PartAbility COMPUTATION_DATA_RECEPTION = new PartAbility("computation_data_reception");
+    public static final PartAbility COMPUTATION_DATA_TRANSMISSION = new PartAbility("computation_data_transmission");
+
+    public static final PartAbility HPCA_COMPONENT = new PartAbility("hpca_component");
+    public static final PartAbility OBJECT_HOLDER = new PartAbility("object_holder");
 
     /**
      * tier -> available blocks

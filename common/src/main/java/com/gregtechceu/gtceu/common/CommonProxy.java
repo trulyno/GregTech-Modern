@@ -15,6 +15,7 @@ import com.gregtechceu.gtceu.common.data.*;
 import com.gregtechceu.gtceu.common.data.materials.GTFoods;
 import com.gregtechceu.gtceu.config.ConfigHolder;
 import com.gregtechceu.gtceu.data.GregTechDatagen;
+import com.gregtechceu.gtceu.utils.AssemblyLineManager;
 import com.lowdragmc.lowdraglib.gui.factory.UIFactory;
 import dev.architectury.injectables.annotations.ExpectPlatform;
 
@@ -65,5 +66,8 @@ public class CommonProxy {
         WorldGenLayers.registerAll();
         GTFeatures.init();
         GTFeatures.register();
+        // Register data stick copying custom scanner logic
+        AssemblyLineManager.registerScannerLogic();
+
     }
 }

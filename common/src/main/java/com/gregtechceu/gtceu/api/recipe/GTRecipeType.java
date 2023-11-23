@@ -117,6 +117,9 @@ public class GTRecipeType implements RecipeType<GTRecipe> {
     protected final Map<RecipeType<?>, List<GTRecipe>> proxyRecipes;
     private CompoundTag customUICache;
     private final Map<String, Collection<GTRecipe>> researchEntries = new Object2ObjectOpenHashMap<>();
+    @Getter
+    @Setter
+    private boolean isScanner;
 
     public GTRecipeType(ResourceLocation registryName, String group, RecipeType<?>... proxyRecipes) {
         this.registryName = registryName;
