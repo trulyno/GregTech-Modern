@@ -158,8 +158,9 @@ public class GTItems {
 
                 for (GTToolType toolType : GTToolType.values()) {
                     if (property.hasType(toolType)) {
-                        TOOL_ITEMS.put(tier, toolType, REGISTRATE.item("%s_%s".formatted(tier.material.getName().toLowerCase(Locale.ROOT), toolType.name), p -> GTToolItem.create(toolType, tier, p))
+                        TOOL_ITEMS.put(tier, toolType, REGISTRATE.item("%s_%s".formatted(tier.material.getName().toLowerCase(Locale.ROOT), toolType.name), p -> GTToolItem.create(toolType, tier, , p))
                                 .properties(p -> p.craftRemainder(Items.AIR))
+                                        .transform(unificationItem(null, material))
                                 .setData(ProviderType.LANG, NonNullBiConsumer.noop())
                                 .model(NonNullBiConsumer.noop())
                                 .color(() -> GTToolItem::tintColor)
