@@ -5,15 +5,23 @@ import com.gregtechceu.gtceu.api.sound.ExistingSoundEntry;
 import com.gregtechceu.gtceu.api.sound.SoundEntry;
 import com.gregtechceu.gtceu.common.data.GTSoundEntries;
 import com.gregtechceu.gtceu.api.data.tag.TagUtil;
+import com.gregtechceu.gtceu.common.item.tool.behavior.*;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.TagKey;
+import net.minecraft.world.entity.animal.IronGolem;
+import net.minecraft.world.entity.monster.Spider;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.item.enchantment.EnchantmentCategory;
+import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.block.Block;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.function.UnaryOperator;
 
 /**
  * @author KilaBash
@@ -21,73 +29,98 @@ import org.jetbrains.annotations.Nullable;
  * @implNote GTToolType
  */
 public enum GTToolType {
-    SWORD("sword", "swords", 3, -2.4F, false),
-    PICKAXE("pickaxe", "pickaxes", 1, -2.8F, true),
-    SHOVEL("shovel", "shovels", 1.5F, -3.0F, true),
-    AXE("axe", "axes", 6.0F, -3.2F, true),
-    HOE("hoe", "hoes", 0, -3.0F, true),
+    SWORD("sword", "swords", b -> b.attacking().attackDamage(3.0F).attackSpeed(-2.4F), false),
+    PICKAXE("pickaxe", "pickaxes", b -> b.blockBreaking().attackDamage(1.0F).attackSpeed(-2.8F).behaviors(TorchPlaceBehavior.INSTANCE), true),
+    SHOVEL("shovel", "shovels", b -> b.blockBreaking().attackDamage(1.5F).attackSpeed(-3.0F).behaviors(GrassPathBehavior.INSTANCE), true),
+    AXE("axe", "axes", b -> b.blockBreaking()
+            .attackDamage(5.0F).attackSpeed(-3.2F).baseEfficiency(2.0F)
+            .behaviors(DisableShieldBehavior.INSTANCE, TreeFellingBehavior.INSTANCE), true),
+    HOE("hoe", "hoes", b -> b.cannotAttack().attackSpeed(-1.0F), true),
 
-    MINING_HAMMER("mining_hammer", "mining_hammers", TagUtil.createBlockTag("mineable/pickaxe", true), 1.5F, -3.2F, GTCEu.id("item/tools/mining_hammer"), null, false),
+    MINING_HAMMER("mining_hammer", "mining_hammers", b ->
+            b.blockBreaking().aoe(1, 1, 0)
+                    .efficiencyMultiplier(0.4F).attackDamage(1.5F).attackSpeed(-3.2F)
+                    .durabilityMultiplier(3.0F)
+                    .behaviors(TorchPlaceBehavior.INSTANCE), TagUtil.createBlockTag("mineable/pickaxe", true), GTCEu.id("item/tools/mining_hammer"), null, false),
+    SPADE("spade", "spades", b -> b.blockBreaking().aoe(1, 1, 0)
+            .efficiencyMultiplier(0.4F).attackDamage(1.5F).attackSpeed(-3.2F)
+            .durabilityMultiplier(3.0F)
+            .behaviors(GrassPathBehavior.INSTANCE), TagUtil.createBlockTag("mineable/shovel", true), GTCEu.id("item/tools/spade"), null, false),
 
-    SAW("saw", "saws", 1, 1, GTSoundEntries.SAW_TOOL),
-    HARD_HAMMER("hammer", "hammers", 1, 1, GTSoundEntries.FORGE_HAMMER),
-    SOFT_MALLET("mallet", "mallets", 1, 1, GTSoundEntries.SOFT_MALLET_TOOL),
-    WRENCH("wrench", "wrenches", 1, 1, GTSoundEntries.WRENCH_TOOL),
-    FILE("file", "files", 1, 1, GTSoundEntries.FILE_TOOL),
-    CROWBAR("crowbar", "crowbars", 1, 1, new ExistingSoundEntry(SoundEvents.ITEM_BREAK, SoundSource.BLOCKS)),
-    SCREWDRIVER("screwdriver", "screwdrivers", 1, 1, GTSoundEntries.SCREWDRIVER_TOOL),
-    MORTAR("mortar", "mortars", 1, 1, GTSoundEntries.MORTAR_TOOL),
-    WIRE_CUTTER("wire_cutter", "wire_cutters", 1, 1, GTSoundEntries.WIRECUTTER_TOOL),
-    SCYTHE("scythe", "scythes", 1, 1),
-//    SHEARS("shears", 1, 1, GTCEu.id("item/tools/handle_hammer"), GTCEu.id("item/tools/hammer")),
-    KNIFE("knife", "knives", 1, 1),
-    BUTCHERY_KNIFE("butchery_knife", "butchery_knives", 1, 1),
-//    GRAFTER("grafter", 1, 1, GTCEu.id("item/tools/handle_hammer"), GTCEu.id("item/tools/hammer")),
-    PLUNGER("plunger", "plungers", 1, 1, GTSoundEntries.PLUNGER_TOOL),
-    SHEARS("shears", "shears", 1, 1),
+    SAW("saw", "saws", b -> b.crafting().damagePerCraftingAction(2)
+            .attackDamage(-1.0F).attackSpeed(-2.6F)
+            .behaviors(HarvestIceBehavior.INSTANCE), GTSoundEntries.SAW_TOOL),
+    HARD_HAMMER("hammer", "hammers", b -> b.blockBreaking().crafting().damagePerCraftingAction(2)
+            .attackDamage(1.0F).attackSpeed(-2.8F)
+            .behaviors(new EntityDamageBehavior(2.0F, IronGolem.class)), GTSoundEntries.FORGE_HAMMER),
+    SOFT_MALLET("mallet", "mallets", b -> b.crafting().cannotAttack().attackSpeed(-2.4F), GTSoundEntries.SOFT_MALLET_TOOL),
+    WRENCH("wrench", "wrenches", b -> b.blockBreaking().crafting().sneakBypassUse()
+            .attackDamage(1.0F).attackSpeed(-2.8F)
+            .behaviors(BlockRotatingBehavior.INSTANCE, new EntityDamageBehavior(3.0F, IronGolem.class)), GTSoundEntries.WRENCH_TOOL),
+    FILE("file", "files", b-> b.crafting().damagePerCraftingAction(4)
+            .cannotAttack().attackSpeed(-2.4F), GTSoundEntries.FILE_TOOL),
+    CROWBAR("crowbar", "crowbars", b -> b.blockBreaking().crafting()
+            .attackDamage(2.0F).attackSpeed(-2.4F)
+            .sneakBypassUse().behaviors(RotateRailBehavior.INSTANCE), new ExistingSoundEntry(SoundEvents.ITEM_BREAK, SoundSource.BLOCKS)),
+    SCREWDRIVER("screwdriver", "screwdrivers", b -> b.crafting().damagePerCraftingAction(4).sneakBypassUse()
+            .attackDamage(-1.0F).attackSpeed(3.0F)
+            .behaviors(new EntityDamageBehavior(3.0F, Spider.class)), GTSoundEntries.SCREWDRIVER_TOOL),
+    MORTAR("mortar", "mortars", b -> b.crafting().damagePerCraftingAction(2).cannotAttack().attackSpeed(-2.4F), GTSoundEntries.MORTAR_TOOL),
+    WIRE_CUTTER("wire_cutter", "wire_cutters", b -> b.blockBreaking().crafting().damagePerCraftingAction(4).attackDamage(-1.0F).attackSpeed(-2.4F), GTSoundEntries.WIRECUTTER_TOOL),
+    SCYTHE("scythe", "scythes", b -> b.blockBreaking().attacking()
+            .attackDamage(5.0F).attackSpeed(-3.0F).durabilityMultiplier(3.0F)
+            .aoe(2, 2, 2)
+            .behaviors(HoeGroundBehavior.INSTANCE, HarvestCropsBehavior.INSTANCE)
+            .canApplyEnchantment(EnchantmentCategory.DIGGER)),
+    KNIFE("knife", "knives", b -> b.crafting().attacking().attackSpeed(3.0F)),
+    BUTCHERY_KNIFE("butchery_knife", "butchery_knives", b -> b.attacking()
+            .attackDamage(1.5F).attackSpeed(-1.3F).defaultEnchantment(Enchantments.MOB_LOOTING, 3)),
+    //    GRAFTER("grafter", 1, 1, GTCEu.id("item/tools/handle_hammer"), GTCEu.id("item/tools/hammer")),
+    PLUNGER("plunger", "plungers", b -> b.cannotAttack().attackSpeed(-2.4F).sneakBypassUse()
+            .behaviors(PlungerBehavior.INSTANCE), GTSoundEntries.PLUNGER_TOOL),
+    SHEARS("shears", "shears", b -> b),
     ;
 
     public final String name;
     public final TagKey<Item> itemTag;
     public final TagKey<Block> harvestTag;
-    public final float attackDamageModifier;
-    public final float attackSpeedModifier;
     public final ResourceLocation modelLocation;
     @Nullable
     public final SoundEntry soundEntry;
 
-    GTToolType(String name, TagKey<Block> harvestTag, TagKey<Item> itemTag, float attackDamageModifier, float attackSpeedModifier, ResourceLocation modelLocation, SoundEntry soundEntry) {
+    public final UnaryOperator<ToolDefinitionBuilder> toolDefinition;
+
+    GTToolType(String name, UnaryOperator<ToolDefinitionBuilder> toolDefinition, TagKey<Block> harvestTag, TagKey<Item> itemTag, ResourceLocation modelLocation, SoundEntry soundEntry) {
         this.name = name;
         this.itemTag = itemTag;
         this.harvestTag = harvestTag;
-        this.attackDamageModifier = attackDamageModifier;
-        this.attackSpeedModifier = attackSpeedModifier;
         this.modelLocation = modelLocation;
         this.soundEntry = soundEntry;
+        this.toolDefinition = toolDefinition;
     }
 
-    GTToolType(String name, String plural, TagKey<Block> harvestTag, float attackDamageModifier, float attackSpeedModifier, ResourceLocation modelLocation, SoundEntry soundEntry, boolean isVanilla) {
-        this(name, harvestTag, isVanilla ? TagUtil.createItemTag(plural, true) : TagUtil.createPlatformItemTag("tools/" + plural, plural), attackDamageModifier, attackSpeedModifier, modelLocation, soundEntry);
+    GTToolType(String name, String plural, UnaryOperator<ToolDefinitionBuilder> toolDefinition, TagKey<Block> harvestTag, ResourceLocation modelLocation, SoundEntry soundEntry, boolean isVanilla) {
+        this(name, toolDefinition, harvestTag, isVanilla ? TagUtil.createItemTag(plural, true) : TagUtil.createPlatformItemTag("tools/" + plural, plural), modelLocation, soundEntry);
     }
 
-    GTToolType(String name, String plural, float attackDamageModifier, float attackSpeedModifier, ResourceLocation modelLocation, SoundEntry soundEntry, boolean isVanilla) {
-        this(name, plural, isVanilla ? TagUtil.createBlockTag("mineable/" + name, true) : TagUtil.createPlatformUnprefixedTag(BuiltInRegistries.BLOCK, "forge:mineable/" + name, "fabric:mineable/" + name), attackDamageModifier, attackSpeedModifier, modelLocation, soundEntry, isVanilla);
+    GTToolType(String name, String plural, UnaryOperator<ToolDefinitionBuilder> toolDefinition, ResourceLocation modelLocation, SoundEntry soundEntry, boolean isVanilla) {
+        this(name, plural, toolDefinition, isVanilla ? TagUtil.createBlockTag("mineable/" + name, true) : TagUtil.createPlatformUnprefixedTag(BuiltInRegistries.BLOCK, "forge:mineable/" + name, "fabric:mineable/" + name), modelLocation, soundEntry, isVanilla);
     }
 
-    GTToolType(String name, String plural, float attackDamageModifier, float attackSpeedModifier, SoundEntry soundEntry, boolean isVanilla) {
-        this(name, plural, attackDamageModifier, attackSpeedModifier, GTCEu.id(String.format("item/tools/%s", name)), soundEntry, isVanilla);
+    GTToolType(String name, String plural, UnaryOperator<ToolDefinitionBuilder> toolDefinition, SoundEntry soundEntry, boolean isVanilla) {
+        this(name, plural, toolDefinition, GTCEu.id(String.format("item/tools/%s", name)), soundEntry, isVanilla);
     }
 
-    GTToolType(String name, String plural, float attackDamageModifier, float attackSpeedModifier, SoundEntry soundEntry) {
-        this(name, plural, attackDamageModifier, attackSpeedModifier, soundEntry, false);
+    GTToolType(String name, String plural, UnaryOperator<ToolDefinitionBuilder> toolDefinition, SoundEntry soundEntry) {
+        this(name, plural, toolDefinition, soundEntry, false);
     }
 
-    GTToolType(String name, String plural, float attackDamageModifier, float attackSpeedModifier, boolean isVanilla) {
-        this(name, plural, attackDamageModifier, attackSpeedModifier, null, isVanilla);
+    GTToolType(String name, String plural, UnaryOperator<ToolDefinitionBuilder> toolDefinition, boolean isVanilla) {
+        this(name, plural, toolDefinition, null, isVanilla);
     }
 
-    GTToolType(String name, String plural, float attackDamageModifier, float attackSpeedModifier) {
-        this(name, plural, attackDamageModifier, attackSpeedModifier, false);
+    GTToolType(String name, String plural, UnaryOperator<ToolDefinitionBuilder> toolDefinition) {
+        this(name, plural, toolDefinition, false);
     }
 
     public boolean is(ItemStack itemStack) {
