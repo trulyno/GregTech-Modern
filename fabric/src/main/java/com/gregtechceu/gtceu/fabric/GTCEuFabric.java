@@ -8,6 +8,7 @@ import com.gregtechceu.gtceu.api.machine.feature.IInteractedMachine;
 import com.gregtechceu.gtceu.api.recipe.ingredient.fabric.SizedIngredientImpl;
 import com.gregtechceu.gtceu.common.ServerCommands;
 import com.gregtechceu.gtceu.common.fabric.CommonProxyImpl;
+import com.gregtechceu.gtceu.data.loader.fabric.BedrockOreLoaderImpl;
 import com.gregtechceu.gtceu.data.loader.fabric.FluidVeinLoaderImpl;
 import com.gregtechceu.gtceu.data.loader.fabric.OreDataLoaderImpl;
 import com.gregtechceu.gtceu.utils.TaskHandler;
@@ -47,6 +48,7 @@ public class GTCEuFabric implements ModInitializer {
 
         ResourceManagerHelper.get(PackType.SERVER_DATA).registerReloadListener(new OreDataLoaderImpl());
         ResourceManagerHelper.get(PackType.SERVER_DATA).registerReloadListener(new FluidVeinLoaderImpl());
+        ResourceManagerHelper.get(PackType.SERVER_DATA).registerReloadListener(new BedrockOreLoaderImpl());
 
         if (GTCEu.isRebornEnergyLoaded()) {
             GTCapability.CAPABILITY_ENERGY.registerFallback(new EUToREProvider(EnergyStorage.SIDED::find));

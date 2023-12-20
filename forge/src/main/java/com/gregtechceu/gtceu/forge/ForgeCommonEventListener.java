@@ -1,6 +1,5 @@
 package com.gregtechceu.gtceu.forge;
 
-import appeng.hooks.ticking.TickHandler;
 import com.gregtechceu.gtceu.GTCEu;
 import com.gregtechceu.gtceu.api.block.MetaMachineBlock;
 import com.gregtechceu.gtceu.api.capability.forge.compat.EUToFEProvider;
@@ -8,13 +7,13 @@ import com.gregtechceu.gtceu.api.item.forge.ComponentItemImpl;
 import com.gregtechceu.gtceu.api.item.forge.DrumMachineItemImpl;
 import com.gregtechceu.gtceu.api.machine.feature.IInteractedMachine;
 import com.gregtechceu.gtceu.common.ServerCommands;
+import com.gregtechceu.gtceu.data.loader.forge.BedrockOreLoaderImpl;
 import com.gregtechceu.gtceu.data.loader.forge.FluidVeinLoaderImpl;
 import com.gregtechceu.gtceu.data.loader.forge.OreDataLoaderImpl;
 import com.gregtechceu.gtceu.utils.TaskHandler;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
@@ -82,6 +81,7 @@ public class ForgeCommonEventListener {
     public static void registerReloadListeners(AddReloadListenerEvent event) {
         event.addListener(new OreDataLoaderImpl());
         event.addListener(new FluidVeinLoaderImpl());
+        event.addListener(new BedrockOreLoaderImpl());
     }
 
     @SubscribeEvent
